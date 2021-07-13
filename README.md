@@ -11,8 +11,7 @@ Hra sa môže nachádzať v troch stavoch a to:
 
     2.	HRA – samotné hranie hry, kde sa už objekty posúvajú po obrazovke a počíta sa dosiahnuté skóre
 
-    3.	KONIEC – po narazení vtáčika do prekážky alebo pri vyletení mimo hracej plochy. 
-Zobrazí sa hráčovo najvyššie dosiahnuté skóre od spustenia hry a skóre, ktoré dosiahol v tejto hre. Po stlačení klávesy R hráč spustí novú hru.
+    3.	KONIEC – po narazení vtáčika do prekážky alebo pri vyletení mimo hracej plochy. $\n$ Zobrazí sa hráčovo najvyššie dosiahnuté skóre od spustenia hry a skóre, ktoré dosiahol v tejto hre. Po stlačení klávesy R hráč spustí novú hru.
 
 Tieto tri stavy rozlišujem, aby som vedela určiť čo má byť kedy zobrazené na obrazovke. Napríklad pri stave START sa musí zobraziť návod, pri stave KONIEC výsledok atď.
 
