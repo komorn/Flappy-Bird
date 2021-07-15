@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,10 +26,10 @@ namespace FlappyBirdProgram
                                         //lebo 1 pripočítavam keď sa vtáčik dostane pomedzi obe trubky
         bool gameOver = true;           // boolovska premenna, ktorú používam, aby som vedela spustit hru znova - restart 
                                         //(stlacenie R na klavesnici po prehre) 
-        bool prehraBola = false;
+        bool prehraBola = false;        //boolovska premenna aby som vedela rozlíšiť či ide o úplný štart(klávesa S) hry, alebo reštart(klávesa R)
         int i;                          //premenna k meneniu rychlosti pohybu objektov v priebehu hry
         private static Random random = new Random();      //instancia random pre poprehadzovanie poradia trubiek v hre
-        double najvyssieSkore = Int32.MinValue;
+        double najvyssieSkore = Int32.MinValue;             //premenná pre pamatanie si najvyššieho dosiahnutého skóre hráča
 
         public Form1()
         {
@@ -75,11 +75,11 @@ namespace FlappyBirdProgram
             /*funkcia pomocou ktorej nastavím začiatok hry - umiestneni komponent na ich miesta, štartovacia pozícia vtáčika, rozloženie prekážok...*/
             timer1.Enabled = true;      //sprístupním časovač - od nikadiaľ inde ho nechcem spúšťať, až pri štarte
             score = 0;                  // počiatočné skóre pri spustení/ reštartovaní hry je vždy 0
-            i = 1;                      //premennú i nastavím na 1, aby som vedela dobre a správne meniť rýchlosť pri kždej novej hre
+            i = 1;                      //premennú i nastavím na 1, aby som vedela dobre a správne meniť rýchlosť pri každej novej hre
                                         // hodnota 1, lebo rýchlosť mením prvýkrát až keď dosiahnem skóre 5
             gameOver = false;           // hodnotu že hráč prehral nastavím na začiatku hry na false
             List<int> polohyTrubiek = new List<int>() { 500, 800, 1100, 1400, 1700, 2000 };  //list s hodnotami poloh jednotlivych trubiek - 
-                                                                                            //list, aby som ho vedela vzdy jednoducho poprehadzovat pomocou generatora
+                                                                                            //list, aby som ho vedela vzdy jednoducho               poprehadzovat  pomocou generatora
             Generator(polohyTrubiek);       //prehadzanie listu pri kaźdom starte - aby boli prekazky v kazdej hre umiestnene inak
 
             FBird.Location = new Point(57, 57);     //počiatočná pozícia vtáčika v okne
@@ -112,8 +112,6 @@ namespace FlappyBirdProgram
                     trubka.Left = polohyTrubiek[5];
                 }
             }
-            // potrebujem 2krat po sebe vygenerovat to iste cisielko - teda bud polohyTrubiek zvacsit 2krat alebo 
-            //             vymysliet nejaky iny shuffle :)
             timer1.Start();             //všetko umiestné na mieste a spúšťam časovač - dostávam sa do funkcie timer1_tick
         }
 
@@ -129,7 +127,7 @@ namespace FlappyBirdProgram
                 c[k] = c[n];                        
                 c[n] = value;
             }
-            return c;               //vráti poprehadzovaný list s polohami trubiek
+            return c;               //vráti poprehadzovaný list s polohami trubiek(poloha trubky = ľavá súradnica jednotlivých prekážok)
         }
         private void MenicRychlosti(double sc)
         {
@@ -143,7 +141,7 @@ namespace FlappyBirdProgram
         private void Koniec()
         {
             /*funkcia k ukončeniu hry*/
-            if (score > najvyssieSkore)         //pamatám si hráčove najvyššie dosiahnuté skóre, 
+            if (score > najvyssieSkore)         //pamatám si hráčovo najvyššie dosiahnuté skóre, 
                 najvyssieSkore = score;               //ktoré vypíšem keď ukončí hru, aby vedel aké najvyššie skóre zatiaľ dosiahol
 
             timer1.Stop();                  //zastavím časovač, objekty sa prestanú hýbať
@@ -158,7 +156,7 @@ namespace FlappyBirdProgram
         {
             //čo sa deje pri každom tiknutí časovača, interval - 20 milisekúnd
             LSkore.Text = "SKÓRE: " + score;    //zapisovanie(vypísanie v okne hry) skóre
-            LRychlost.Text = "Rychlost: " + rychlost;
+            LRychlost.Text = "Rychlost: " + rychlost;       //v okne vypisujem taktiž súčasnú rýchlosť vtáčika, aby hráč vedel akej rýchlosti dosiahol
             FBird.Top += pohybHoreDole;              //hybanie vtacika hore dole (podľa toho či je/nie je stlačený medzerník)
 
             Rectangle Naraz = new Rectangle(FBird.Left, FBird.Top, FBird.Width - 2, FBird.Height - 3);     //oblast nárazu vtáčika - vytvorila som modifikovaný štvorec aby to bolo trochu presnejšie ako iba FBird.Bounds, 
@@ -173,12 +171,12 @@ namespace FlappyBirdProgram
             {
                 if ((string)trubka.Tag == "prekazka1" || (string)trubka.Tag == "prekazka2" || (string)trubka.Tag == "prekazka3" ||
                     (string)trubka.Tag == "prekazka4" || (string)trubka.Tag == "prekazka5" || (string)trubka.Tag == "prekazka6")
-                    //zároveň ak je jeho značka prekážkaX (X = číslo od 1 do 6)
+                    //zároveň ak je jeho značka prekážkaX (X - číslo od 1 do 6)
                 {
                     trubka.Left -= rychlost;           //posúvanie prekážok smerom doľava mimo obrazovku v aktuálne danej rýchlosti
                                                         // na začiatku začiatočná rýchlosť, postupne zvyšujeme podľa skóre pomocou funkcie MenicRychlosti()
 
-                    if (trubka.Left < -100)         // ak prekážka vyjde mimo okna hry presunieme prekážku zasa na opacnu stranu
+                    if (trubka.Left < -100)         // ak prekážka vyjde mimo okna hry presunieme prekážku zasa na opacnu stranu(pravý neviditeľný koniec)
                     {
                         trubka.Left = 1700;
                         score += .5;                    //a za každú jednu trubku pripočítam skóre 0.5, lebo mám dve vždy dve trubky, 
